@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@globalStyles": ["assets/globalStyles.js"],
+      "@colours": ["assets/colours.js"]
+    }
+  }
+}

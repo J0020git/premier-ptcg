@@ -11,7 +11,7 @@ export default function CollectionsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colours.lightgrey,
     alignItems: "center",
     justifyContent: "center",
   },
