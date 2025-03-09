@@ -10,7 +10,25 @@ export default function RootLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: "Index",
+        }}
+      />
+      <Tabs.Screen
+        name="expansions"
+        options={{
+          title: "Expansions",
+        }}
+      />
+      <Tabs.Screen
+        name="collections"
+        options={{
+          title: "Collections",
+        }}
+      />
+      <Tabs.Screen
+        name="search"
+        options={{
+          title: "Search",
         }}
       />
     </Tabs>
