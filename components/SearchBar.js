@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 
 import Search from "assets/svg/search.svg";
 import colours from "@colours";
@@ -8,12 +8,13 @@ export default function SearchBar() {
   return (
     <View style={styles.container}>
       <Search width={16} height={16} color={colours.grey} />
-      <Text
+      <TextInput
         style={[globalStyles.textLarge, styles.textSearch]}
         numberOfLines={1}
-      >
-        Search by card name or card text
-      </Text>
+        placeholder="Search by card name or card text"
+        placeholderTextColor={colours.grey}
+        enterKeyHint="search"
+      ></TextInput>
     </View>
   );
 }
@@ -27,11 +28,11 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     width: "100%",
     padding: 12,
-    gap: 12,
+    gap: 6,
     borderRadius: 16,
   },
   textSearch: {
-    color: colours.grey,
+    color: colours.dark,
     flex: 1,
   },
 });
