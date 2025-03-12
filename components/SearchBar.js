@@ -4,7 +4,7 @@ import Search from "assets/svg/search.svg";
 import colours from "@colours";
 import globalStyles from "@globalStyles";
 
-export default function SearchBar() {
+export default function SearchBar({ onChangeText, onSubmitEditing }) {
   return (
     <View style={styles.container}>
       <Search width={16} height={16} color={colours.grey} />
@@ -14,6 +14,8 @@ export default function SearchBar() {
         placeholder="Search by card name or card text"
         placeholderTextColor={colours.grey}
         enterKeyHint="search"
+        onChangeText={onChangeText}
+        onSubmitEditing={onSubmitEditing}
       ></TextInput>
     </View>
   );
