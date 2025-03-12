@@ -11,6 +11,11 @@ export default styles = StyleSheet.create({
     fontFamily: "Roboto",
     fontWeight: 500,
   },
+  textLarge: {
+    fontSize: 16,
+    fontFamily: "Roboto",
+    fontWeight: 400,
+  },
   textSubheading: {
     fontSize: 16,
     fontFamily: "Roboto",

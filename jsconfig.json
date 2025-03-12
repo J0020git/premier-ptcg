@@ -4,7 +4,8 @@
     "paths": {
       "@app/*": ["app/*"],
       "@globalStyles": ["assets/globalStyles.js"],
-      "@colours": ["assets/colours.js"]
+      "@colours": ["assets/colours.js"],
+      "@components": ["components/index.js"]
     }
   }
 }
