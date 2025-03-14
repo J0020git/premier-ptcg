@@ -18,17 +18,35 @@ export default function SearchScreen() {
       }
     }
 
-    // console.log(text);
-    // console.log(searchTerms);
+    const query = searchTerms
+      .map(
+        (term) =>
+          `(name:${term} OR abilities.text:${term} OR attacks.text:${term})`
+      )
+      .join(" ");
+
+    return query;
   }
 
-  function searchCards(query) {
-    //
+  async function searchCards(query) {
+    const baseUrl = "https://api.pokemontcg.io/v2/cards";
+    const url = `${baseUrl}?q=${query}`;
+    console.log(url);
+    const response = await fetch(url, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   function handleSearch() {
     const query = constructQuery(textSearch);
-    // searchCards(query)
+    searchCards(query);
   }
 
   return (
