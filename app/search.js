@@ -1,4 +1,10 @@
-import { ActivityIndicator, StyleSheet, View, Text } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import { useState } from "react";
 
 import { SearchBar, CardList } from "@components";
@@ -8,6 +14,7 @@ export default function SearchScreen() {
   const [textSearch, setTextSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [cards, setCards] = useState({});
+  const contentWidth = useWindowDimensions().width - 24 * 2;
 
   function constructQuery(text) {
     searchTerms = [];
@@ -23,7 +30,7 @@ export default function SearchScreen() {
     const query = searchTerms
       .map(
         (term) =>
-          `(name:${term} OR abilities.text:${term} OR attacks.text:${term})`
+          `(name:${term}* OR abilities.text:${term} OR attacks.text:${term})`
       )
       .join(" ");
 
@@ -71,7 +78,7 @@ export default function SearchScreen() {
     } else {
       return (
         <View style={{ flex: 1, width: "100%" }}>
-          <CardList cards={cards} numColumns={3} />
+          <CardList cards={cards} listWidth={contentWidth} />
         </View>
       );
     }
