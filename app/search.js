@@ -1,11 +1,14 @@
-import { StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View, Text } from "react-native";
 import { useState } from "react";
+import { FlashList } from "@shopify/flash-list";
 
 import { SearchBar } from "@components";
 import colours from "@colours";
 
 export default function SearchScreen() {
   const [textSearch, setTextSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [cards, setCards] = useState({});
 
   function constructQuery(text) {
     searchTerms = [];
@@ -31,16 +34,20 @@ export default function SearchScreen() {
   async function searchCards(query) {
     const baseUrl = "https://api.pokemontcg.io/v2/cards";
     const url = `${baseUrl}?q=${query}`;
-    console.log(url);
+    setIsLoading(true);
     const response = await fetch(url, {
       method: "GET",
     })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json);
+        if (json.count != 0) setCards(json);
       })
       .catch((error) => {
+        // TODO: Improve error handling
         console.error(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
@@ -49,9 +56,37 @@ export default function SearchScreen() {
     searchCards(query);
   }
 
+  function renderContent() {
+    if (isLoading) {
+      return (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="small" />
+        </View>
+      );
+    } else if (Object.keys(cards).length === 0) {
+      return (
+        <View style={styles.loadingContainer}>
+          <Text>Todo</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{ flex: 1, width: "100%" }}>
+          <FlashList
+            data={cards.data}
+            renderItem={({ item }) => <Text>{item.name}</Text>}
+            keyExtractor={(item) => item.id}
+            estimatedItemSize={cards.count}
+          />
+        </View>
+      );
+    }
+  }
+
   return (
     <View style={styles.container}>
       <SearchBar onChangeText={setTextSearch} onSubmitEditing={handleSearch} />
+      {renderContent()}
     </View>
   );
 }
@@ -63,5 +98,12 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "flex-start",
     padding: 24,
+    paddingBottom: 0,
+  },
+  loadingContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    width: "100%",
   },
 });
