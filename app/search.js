@@ -30,7 +30,7 @@ export default function SearchScreen() {
     const query = searchTerms
       .map(
         (term) =>
-          `(name:${term}* OR abilities.text:${term} OR attacks.text:${term})`
+          `(name:${term}* OR abilities.text:${term}* OR attacks.text:${term}* OR attacks.name:${term}*)`
       )
       .join(" ");
 
