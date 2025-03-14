@@ -1,8 +1,7 @@
 import { ActivityIndicator, StyleSheet, View, Text } from "react-native";
 import { useState } from "react";
-import { FlashList } from "@shopify/flash-list";
 
-import { SearchBar } from "@components";
+import { SearchBar, CardList } from "@components";
 import colours from "@colours";
 
 export default function SearchScreen() {
@@ -72,12 +71,7 @@ export default function SearchScreen() {
     } else {
       return (
         <View style={{ flex: 1, width: "100%" }}>
-          <FlashList
-            data={cards.data}
-            renderItem={({ item }) => <Text>{item.name}</Text>}
-            keyExtractor={(item) => item.id}
-            estimatedItemSize={cards.count}
-          />
+          <CardList cards={cards} numColumns={3} />
         </View>
       );
     }
