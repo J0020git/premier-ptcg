@@ -17,23 +17,22 @@ export default function SearchScreen() {
   const contentWidth = useWindowDimensions().width - 24 * 2;
 
   function constructQuery(text) {
-    searchTerms = [];
+    let query = "";
     const regexp = /\“.*?\”|[^ ]+/g;
     for (const match of text.matchAll(regexp)) {
+      const term = match[0].replace(/[^a-zA-Z0-9\s]/g, "");
       if (match[0].startsWith("“") && match[0].endsWith("”")) {
-        searchTerms.push(`"${match[0].slice(1, -1)}"`);
+        // Handle exact phrases, denoted with "quotes"
+        query = query.concat(
+          `(name:"${term}" OR abilities.text:"${term}" OR attacks.text:"${term}" OR attacks.name:"${term}") `
+        );
       } else {
-        searchTerms.push(match[0]);
+        // Handle individual search terms
+        query = query.concat(
+          `(name:*${term}* OR abilities.text:*${term}* OR attacks.text:*${term}* OR attacks.name:*${term}*) `
+        );
       }
     }
-
-    const query = searchTerms
-      .map(
-        (term) =>
-          `(name:${term}* OR abilities.text:${term}* OR attacks.text:${term}* OR attacks.name:${term}*)`
-      )
-      .join(" ");
-
     return query;
   }
 
@@ -46,7 +45,8 @@ export default function SearchScreen() {
     })
       .then((response) => response.json())
       .then((json) => {
-        if (json.count != 0) setCards(json);
+        if (json.count == 0) setCards({}); //TODO: Improve handling 0 results.
+        else setCards(json);
       })
       .catch((error) => {
         // TODO: Improve error handling
@@ -58,6 +58,10 @@ export default function SearchScreen() {
   }
 
   function handleSearch() {
+    if (textSearch.trim() == "") {
+      // Prevent empty searches
+      return;
+    }
     const query = constructQuery(textSearch);
     searchCards(query);
   }
