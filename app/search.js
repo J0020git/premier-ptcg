@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  SafeAreaView,
   StyleSheet,
   Text,
   View,
@@ -7,13 +8,14 @@ import {
 } from "react-native";
 import { useState } from "react";
 
-import { SearchBar, CardList } from "@components";
+import { SearchBar, CardList, CardModal } from "@components";
 import colours from "@colours";
 
 export default function SearchScreen() {
   const [textSearch, setTextSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [cards, setCards] = useState({});
+  const [visible, setVisible] = useState(false);
   const contentWidth = useWindowDimensions().width - 24 * 2;
 
   function constructQuery(text) {
@@ -82,17 +84,33 @@ export default function SearchScreen() {
     } else {
       return (
         <View style={{ flex: 1, width: "100%" }}>
-          <CardList cards={cards} listWidth={contentWidth} />
+          <CardList
+            cards={cards}
+            listWidth={contentWidth}
+            onCardPress={() => {
+              setVisible(true);
+            }}
+          />
         </View>
       );
     }
   }
 
   return (
-    <View style={styles.container}>
-      <SearchBar onChangeText={setTextSearch} onSubmitEditing={handleSearch} />
-      {renderContent()}
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <SearchBar
+          onChangeText={setTextSearch}
+          onSubmitEditing={handleSearch}
+        />
+        {renderContent()}
+        <CardModal
+          visible={visible}
+          close={() => setVisible(false)}
+          cards={cards}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 

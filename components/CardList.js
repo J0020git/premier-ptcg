@@ -1,14 +1,14 @@
-import { View, Image, StyleSheet, Text } from "react-native";
+import { Pressable, Image, StyleSheet } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 
-export default function CardList({ cards, listWidth }) {
+export default function CardList({ cards, listWidth, onCardPress }) {
   const numColumns = 3;
   const gap = 12;
   return (
     <FlashList
       data={cards.data}
       renderItem={({ item }) => (
-        <View
+        <Pressable
           style={[
             styles.container,
             {
@@ -16,12 +16,13 @@ export default function CardList({ cards, listWidth }) {
               marginBottom: gap,
             },
           ]}
+          onPress={onCardPress}
         >
           <Image
             source={{ uri: item.images.small }}
             style={{ height: "100%", width: "100%" }}
           />
-        </View>
+        </Pressable>
       )}
       keyExtractor={(item) => item.id}
       estimatedItemSize={cards.count}
