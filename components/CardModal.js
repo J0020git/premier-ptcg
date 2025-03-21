@@ -6,8 +6,10 @@ import {
   View,
   Image,
   Pressable,
+  useWindowDimensions,
 } from "react-native";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
+import { FlashList } from "@shopify/flash-list";
 
 import { CardContext } from "@context";
 import colours from "@colours";
@@ -16,6 +18,8 @@ import globalStyles from "@globalStyles";
 export default function CardModal({ visible, close }) {
   const { cards, selectedIndex, setSelectedIndex } = useContext(CardContext);
   const [selectedCard, setSelectedCard] = useState(null);
+  const screenWidth = useWindowDimensions().width;
+  const flashlistRef = useRef();
 
   // Check if cards is populated and selectedIndex is valid
   useEffect(() => {
@@ -40,12 +44,27 @@ export default function CardModal({ visible, close }) {
         <View style={styles.container}>
           {!!selectedCard && (
             <>
-              <Image
-                source={{ uri: selectedCard.images.large }}
-                style={{
-                  aspectRatio: 245 / 342,
-                  width: "100%",
-                }}
+              <FlashList
+                // ref={flashlistRef}
+                data={cards.data}
+                renderItem={({ item }) => (
+                  <View style={{ width: screenWidth, alignItems: "center" }}>
+                    <Image
+                      source={{ uri: item.images.large }}
+                      style={{
+                        width: screenWidth - 48,
+                        aspectRatio: 245 / 342,
+                      }}
+                    />
+                  </View>
+                )}
+                keyExtractor={(item) => item.id}
+                estimatedItemSize={cards.count}
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                initialScrollIndex={selectedIndex}
+                horizontal
+                pagingEnabled
               />
               <View style={styles.carouselControls}>
                 <Pressable
@@ -99,12 +118,13 @@ export default function CardModal({ visible, close }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    paddingTop: 24,
     gap: 12,
   },
   carouselControls: {
     width: "100%",
     flexDirection: "row",
+    paddingHorizontal: 24,
   },
   carouselButton: {
     flex: 1,
