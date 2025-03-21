@@ -5,6 +5,7 @@ import {
   Text,
   View,
   Image,
+  Pressable,
 } from "react-native";
 import { useContext, useState, useEffect } from "react";
 
@@ -13,7 +14,7 @@ import colours from "@colours";
 import globalStyles from "@globalStyles";
 
 export default function CardModal({ visible, close }) {
-  const { cards, selectedIndex } = useContext(CardContext);
+  const { cards, selectedIndex, setSelectedIndex } = useContext(CardContext);
   const [selectedCard, setSelectedCard] = useState(null);
 
   // Check if cards is populated and selectedIndex is valid
@@ -46,7 +47,47 @@ export default function CardModal({ visible, close }) {
                   width: "100%",
                 }}
               />
-              <Text>{selectedCard?.name}</Text>
+              <View style={styles.carouselControls}>
+                <Pressable
+                  style={styles.carouselButton}
+                  onPress={() => {
+                    setSelectedIndex((prevIndex) => prevIndex - 1);
+                  }}
+                  disabled={selectedIndex === 0}
+                >
+                  <Text>Prev</Text>
+                </Pressable>
+                <Pressable style={styles.carouselButton} onPress={close}>
+                  <Text>Close</Text>
+                </Pressable>
+                <Pressable
+                  style={styles.carouselButton}
+                  onPress={() => {
+                    setSelectedIndex((prevIndex) => prevIndex + 1);
+                  }}
+                  disabled={selectedIndex === cards.count - 1}
+                >
+                  <Text>Next</Text>
+                </Pressable>
+              </View>
+              <View>
+                <Text
+                  style={[
+                    globalStyles.textHeading,
+                    { color: colours.dark, alignSelf: "center" },
+                  ]}
+                >
+                  {selectedCard?.name}
+                </Text>
+                <Text
+                  style={[
+                    globalStyles.textSubheading,
+                    { color: colours.grey, alignSelf: "center" },
+                  ]}
+                >
+                  {selectedCard?.set?.name}
+                </Text>
+              </View>
             </>
           )}
         </View>
@@ -59,5 +100,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
+    gap: 12,
+  },
+  carouselControls: {
+    width: "100%",
+    flexDirection: "row",
+  },
+  carouselButton: {
+    flex: 1,
+    padding: 12,
+    backgroundColor: "pink",
+    borderRadius: 12,
+    alignItems: "center",
   },
 });
