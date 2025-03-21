@@ -1,14 +1,16 @@
 import {
-  Button,
   Modal,
   StyleSheet,
   SafeAreaView,
   Text,
   View,
+  Image,
 } from "react-native";
 import { useContext, useState, useEffect } from "react";
 
 import { CardContext } from "@context";
+import colours from "@colours";
+import globalStyles from "@globalStyles";
 
 export default function CardModal({ visible, close }) {
   const { cards, selectedIndex } = useContext(CardContext);
@@ -19,7 +21,7 @@ export default function CardModal({ visible, close }) {
     const valid =
       cards &&
       cards.data &&
-      cards.count &&
+      cards.count > 0 &&
       selectedIndex >= 0 &&
       selectedIndex < cards.count;
 
@@ -28,14 +30,26 @@ export default function CardModal({ visible, close }) {
 
   return (
     <Modal
-      visible={visible && !!selectedCard}
+      visible={visible}
       animationType="slide"
       presentationStyle="pageSheet"
       onRequestClose={close}
     >
-      <SafeAreaView style={styles.container}>
-        <Button onPress={close} title="Close" />
-        <Text>{selectedCard?.name}</Text>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+        <View style={styles.container}>
+          {!!selectedCard && (
+            <>
+              <Image
+                source={{ uri: selectedCard.images.large }}
+                style={{
+                  aspectRatio: 245 / 342,
+                  width: "100%",
+                }}
+              />
+              <Text>{selectedCard?.name}</Text>
+            </>
+          )}
+        </View>
       </SafeAreaView>
     </Modal>
   );
@@ -44,5 +58,6 @@ export default function CardModal({ visible, close }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 24,
   },
 });
