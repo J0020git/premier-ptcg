@@ -6,16 +6,17 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
+import { CardContext } from "@context";
 import { SearchBar, CardList, CardModal } from "@components";
 import colours from "@colours";
 
 export default function SearchScreen() {
   const [textSearch, setTextSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [cards, setCards] = useState({});
   const [visible, setVisible] = useState(false);
+  const { cards, setCards } = useContext(CardContext);
   const contentWidth = useWindowDimensions().width - 24 * 2;
 
   function constructQuery(text) {
@@ -85,9 +86,8 @@ export default function SearchScreen() {
       return (
         <View style={{ flex: 1, width: "100%" }}>
           <CardList
-            cards={cards}
             listWidth={contentWidth}
-            onCardPress={() => {
+            open={() => {
               setVisible(true);
             }}
           />
@@ -104,11 +104,7 @@ export default function SearchScreen() {
           onSubmitEditing={handleSearch}
         />
         {renderContent()}
-        <CardModal
-          visible={visible}
-          close={() => setVisible(false)}
-          cards={cards}
-        />
+        <CardModal visible={visible} close={() => setVisible(false)} />
       </View>
     </SafeAreaView>
   );

@@ -5,7 +5,8 @@
       "@app/*": ["app/*"],
       "@globalStyles": ["assets/globalStyles.js"],
       "@colours": ["assets/colours.js"],
-      "@components": ["components/index.js"]
+      "@components": ["components/index.js"],
+      "@context": ["context/index.js"]
     }
   }
 }
