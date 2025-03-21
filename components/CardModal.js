@@ -1,16 +1,41 @@
-import { Button, Modal, StyleSheet, SafeAreaView, Text } from "react-native";
+import {
+  Button,
+  Modal,
+  StyleSheet,
+  SafeAreaView,
+  Text,
+  View,
+} from "react-native";
+import { useContext, useState, useEffect } from "react";
 
-export default function CardModal({ visible, close, cards }) {
+import { CardContext } from "@context";
+
+export default function CardModal({ visible, close }) {
+  const { cards, selectedIndex } = useContext(CardContext);
+  const [selectedCard, setSelectedCard] = useState(null);
+
+  // Check if cards is populated and selectedIndex is valid
+  useEffect(() => {
+    const valid =
+      cards &&
+      cards.data &&
+      cards.count &&
+      selectedIndex >= 0 &&
+      selectedIndex < cards.count;
+
+    setSelectedCard(valid ? cards.data[selectedIndex] : null);
+  }, [cards, selectedIndex]);
+
   return (
     <Modal
-      visible={visible}
+      visible={visible && !!selectedCard}
       animationType="slide"
       presentationStyle="pageSheet"
       onRequestClose={close}
     >
-      <SafeAreaView style={{ flex: 1 }}>
-        <Button onPress={close} title="Close"></Button>
-        <Text>TODO</Text>
+      <SafeAreaView style={styles.container}>
+        <Button onPress={close} title="Close" />
+        <Text>{selectedCard?.name}</Text>
       </SafeAreaView>
     </Modal>
   );

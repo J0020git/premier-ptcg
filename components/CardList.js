@@ -1,13 +1,16 @@
 import { Pressable, Image, StyleSheet } from "react-native";
 import { FlashList } from "@shopify/flash-list";
+import { CardContext } from "@context";
+import { useContext } from "react";
 
-export default function CardList({ cards, listWidth, onCardPress }) {
+export default function CardList({ listWidth, open }) {
+  const { cards, setSelectedIndex } = useContext(CardContext);
   const numColumns = 3;
   const gap = 12;
   return (
     <FlashList
       data={cards.data}
-      renderItem={({ item }) => (
+      renderItem={({ item, index }) => (
         <Pressable
           style={[
             styles.container,
@@ -16,7 +19,10 @@ export default function CardList({ cards, listWidth, onCardPress }) {
               marginBottom: gap,
             },
           ]}
-          onPress={onCardPress}
+          onPress={() => {
+            setSelectedIndex(index);
+            open();
+          }}
         >
           <Image
             source={{ uri: item.images.small }}
