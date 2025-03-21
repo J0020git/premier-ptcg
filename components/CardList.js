@@ -1,4 +1,4 @@
-import { Pressable, Image, StyleSheet } from "react-native";
+import { Pressable, Image } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { CardContext } from "@context";
 import { useContext } from "react";
@@ -7,18 +7,23 @@ export default function CardList({ listWidth, open }) {
   const { cards, setSelectedIndex } = useContext(CardContext);
   const numColumns = 3;
   const gap = 12;
+
+  function calculateAlignment(index) {
+    if (index % numColumns === 0) return "flex-start";
+    else if (index % numColumns === numColumns - 1) return "flex-end";
+    else return "center";
+  }
+
   return (
     <FlashList
       data={cards.data}
       renderItem={({ item, index }) => (
         <Pressable
-          style={[
-            styles.container,
-            {
-              width: (listWidth - gap * (numColumns - 1)) / numColumns,
-              marginBottom: gap,
-            },
-          ]}
+          style={{
+            width: "100%",
+            marginBottom: gap,
+            alignItems: calculateAlignment(index),
+          }}
           onPress={() => {
             setSelectedIndex(index);
             open();
@@ -26,7 +31,10 @@ export default function CardList({ listWidth, open }) {
         >
           <Image
             source={{ uri: item.images.small }}
-            style={{ height: "100%", width: "100%" }}
+            style={{
+              aspectRatio: 245 / 342,
+              width: (listWidth - gap * (numColumns - 1)) / numColumns,
+            }}
           />
         </Pressable>
       )}
@@ -34,14 +42,12 @@ export default function CardList({ listWidth, open }) {
       estimatedItemSize={cards.count}
       numColumns={numColumns}
       showsHorizontalScrollIndicator={false}
-      showsVerticalScrollIndicator={false}
+      showsVerticalScrollIndicator={true}
+      contentContainerStyle={{
+        paddingTop: 12,
+        paddingLeft: 24,
+        paddingRight: 24,
+      }}
     />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    aspectRatio: 245 / 342,
-    overflow: "hidden",
-  },
-});

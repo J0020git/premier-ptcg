@@ -99,10 +99,12 @@ export default function SearchScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <SearchBar
-          onChangeText={setTextSearch}
-          onSubmitEditing={handleSearch}
-        />
+        <View style={{ paddingHorizontal: 24 }}>
+          <SearchBar
+            onChangeText={setTextSearch}
+            onSubmitEditing={handleSearch}
+          />
+        </View>
         {renderContent()}
         <CardModal visible={visible} close={() => setVisible(false)} />
       </View>
@@ -116,8 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: colours.lightgrey,
     alignItems: "flex-start",
     justifyContent: "flex-start",
-    padding: 24,
-    paddingBottom: 0,
+    paddingTop: 24,
   },
   loadingContainer: {
     justifyContent: "center",

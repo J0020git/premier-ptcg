@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 12,
     gap: 6,
-    borderRadius: 16,
+    borderRadius: 12,
+    zIndex: 1,
   },
   textSearch: {
     color: colours.dark,
