@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@app/*": ["app/*"],
+      "@assets/*": ["assets/*"],
       "@globalStyles": ["assets/globalStyles.js"],
       "@colours": ["assets/colours.js"],
       "@components": ["components/index.js"],

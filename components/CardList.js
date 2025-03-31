@@ -32,11 +32,14 @@ export default function CardList({ listWidth, open }) {
         >
           <Image
             source={{ uri: item.images.small, cache: "force-cache" }}
+            placeholder={require("@assets/cardBackSmall.png")}
             style={{
               aspectRatio: 245 / 342,
               width: (listWidth - gap * (numColumns - 1)) / numColumns,
             }}
             contentFit="contain"
+            placeholderContentFit="contain"
+            transition={100}
           />
         </Pressable>
       )}
