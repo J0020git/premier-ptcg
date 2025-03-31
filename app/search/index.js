@@ -41,7 +41,7 @@ export default function SearchScreen() {
 
   async function searchCards(query) {
     const baseUrl = "https://api.pokemontcg.io/v2/cards";
-    const url = `${baseUrl}?q=${query}`;
+    const url = `${baseUrl}?q=${query}&orderBy=-set.releaseDate`;
     setIsLoading(true);
     const response = await fetch(url, {
       method: "GET",
