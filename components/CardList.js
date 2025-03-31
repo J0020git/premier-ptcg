@@ -1,4 +1,5 @@
-import { Pressable, Image } from "react-native";
+import { Pressable } from "react-native";
+import { Image } from "expo-image";
 import { FlashList } from "@shopify/flash-list";
 import { CardContext } from "@context";
 import { useContext } from "react";
@@ -30,11 +31,12 @@ export default function CardList({ listWidth, open }) {
           }}
         >
           <Image
-            source={{ uri: item.images.small }}
+            source={{ uri: item.images.small, cache: "force-cache" }}
             style={{
               aspectRatio: 245 / 342,
               width: (listWidth - gap * (numColumns - 1)) / numColumns,
             }}
+            contentFit="contain"
           />
         </Pressable>
       )}
