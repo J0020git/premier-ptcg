@@ -23,7 +23,7 @@ export default function SearchScreen() {
     let query = "";
     const regexp = /\“.*?\”|[^ ]+/g;
     for (const match of text.matchAll(regexp)) {
-      const term = match[0].replace(/[^a-zA-Z0-9\s]/g, "");
+      const term = match[0].replace(/’/g, "'").replace(/[^a-zA-Z0-9\s']/g, "");
       if (match[0].startsWith("“") && match[0].endsWith("”")) {
         // Handle exact phrases, denoted with "quotes"
         query = query.concat(
