@@ -16,7 +16,7 @@ export default function SearchScreen() {
   const [textSearch, setTextSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
-  const { cards, setCards } = useContext(CardContext);
+  const { cards, searchCards } = useContext(CardContext);
   const contentWidth = useWindowDimensions().width - 24 * 2;
 
   function constructQuery(text) {
@@ -39,34 +39,16 @@ export default function SearchScreen() {
     return query;
   }
 
-  async function searchCards(query) {
-    const baseUrl = "https://api.pokemontcg.io/v2/cards";
-    const url = `${baseUrl}?q=${query}&orderBy=-set.releaseDate`;
+  async function handleSearch() {
     setIsLoading(true);
-    const response = await fetch(url, {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.count == 0) setCards({}); //TODO: Improve handling 0 results.
-        else setCards(json);
-      })
-      .catch((error) => {
-        // TODO: Improve error handling
-        console.error(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }
-
-  function handleSearch() {
     if (textSearch.trim() == "") {
       // Prevent empty searches
       return;
     }
     const query = constructQuery(textSearch);
-    searchCards(query);
+    await searchCards(query).finally(() => {
+      setIsLoading(false);
+    });
   }
 
   function renderContent() {
