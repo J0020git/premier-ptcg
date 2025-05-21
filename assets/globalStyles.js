@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 export default styles = StyleSheet.create({
   text: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: "Roboto",
     fontWeight: 400,
   },

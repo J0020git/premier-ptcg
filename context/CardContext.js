@@ -5,10 +5,10 @@ export const CardContext = createContext();
 export function CardProvider({ children }) {
   const [cards, setCards] = useState({});
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const baseUrl = "https://api.pokemontcg.io/v2/cards";
+  const baseUrl = "https://api.pokemontcg.io/v2";
 
   async function searchCards(query) {
-    const url = `${baseUrl}?q=${query}&orderBy=-set.releaseDate`;
+    const url = `${baseUrl}/cards?q=${query}&orderBy=-set.releaseDate`;
     const response = await fetch(url);
     const json = await response.json();
     if (json.count === 0) {
@@ -16,6 +16,13 @@ export function CardProvider({ children }) {
     } else {
       setCards(json);
     }
+    return json;
+  }
+
+  async function searchSets() {
+    const url = `${baseUrl}/sets?&orderBy=-releaseDate,name`;
+    const response = await fetch(url);
+    const json = await response.json();
     return json;
   }
 
@@ -27,6 +34,7 @@ export function CardProvider({ children }) {
         selectedIndex,
         setSelectedIndex,
         searchCards,
+        searchSets,
       }}
     >
       {children}
